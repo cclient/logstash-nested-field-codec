@@ -1,0 +1,1 @@
+{ "name": "logstash-nested-field-codec", "json_encode": "{\"k\":\"v\"}", "base64_encode": "CghKb2huIERvZRDSCRoQamRvZUBleGFtcGxlLmNvbSIMCgg1NTUtNDMyMRAB" }
