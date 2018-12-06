@@ -4,37 +4,45 @@
 
 like 
 
+```source
+
 {
-"name": "logstash-nested-field-codec",
-"base64_encode": "CghKb2huIERvZRDSCRoQamRvZUBleGFtcGxlLmNvbSIMCgg1NTUtNDMyMRAB"
+    "name": "logstash-nested-field-codec",
+    "base64_encode": "CghKb2huIERvZRDSCRoQamRvZUBleGFtcGxlLmNvbSIMCgg1NTUtNDMyMRAB"
 }
+
+```
+
 
 =>
 
+```target
+
 {
-"name": "logstash-nested-field-codec",
-"base64_decode": {}
+  "name": "logstash-nested-field-codec",
+  "base64_decode": {
+    "key":"value"
+  }
 }
+```
 
 ## RUN DEMO
 
-### start docker contain
+### run docker contain
 
-git clone git@github.com:cclient/logstash-n
+* `git clone git@github.com:cclient/logstash-nested-field-codec`
 
-docker run -d --name logstash-nested-field-codec -v $(pwd)/logstash-nested-field-codec:/usr/share/logstash/logstash-nested-field-codec docker.elastic.co/logstash/logstash:6.3.2  tail -f /dev/null
+* `docker run -d --name logstash-nested-field-codec -v $(pwd)/logstash-nested-field-codec:/usr/share/logstash/logstash-nested-field-codec docker pull docker.elastic.co/logstash/logstash:6.3.2  tail -f /dev/null`
 
-### start logstash server
+### start logstash
 
-docker exec -it logstash-nested-field-codec bash
+* `docker exec -it logstash-nested-field-codec bash`
 
-logstash-plugin install logstash-codec-protobuf
+* `logstash-plugin install logstash-codec-protobuf`
 
-logstash -f nested-field-codec.conf
+* `logstash -f nested-field-codec.conf`
 
-this demo test for protobuf
-
-to other logstash-codec-plugins just replace 
+this demo test for protobuf to other logstash-codec-plugins
 
 ### view
 
@@ -42,7 +50,7 @@ https://github.com/logstash-plugins/logstash-codec-{name}/blob/master/spec/codec
 
 https://www.elastic.co/guide/en/logstash/6.3/plugins-codecs-{name}.html
 
-get the detail config info
+get detail config info
 
 ### example
 
@@ -53,6 +61,7 @@ https://github.com/logstash-plugins/logstash-codec-avro/blob/master/spec/codecs/
 https://www.elastic.co/guide/en/logstash/6.3/plugins-codecs-avro.html
 
 ```avro
+
 require 'logstash/devutils/rspec/spec_helper'
 require 'avro'
 require 'base64'
@@ -69,36 +78,19 @@ require 'logstash/event'
       next LogStash::Codecs::Avro.new(avro_config)
     end                                   
 ...                                   
-        schema = Avro::Schema.parse(avro_config['schema_uri'])
-        dw = Avro::IO::DatumWriter.new(schema)
-        buffer = StringIO.new
-        encoder = Avro::IO::BinaryEncoder.new(buffer)
-        dw.write(test_event.to_hash, encoder)
-
-        subject.decode(Base64.strict_encode64(buffer.string)) do |event|
+        subject.decode(buffer.string) do |event|
           insist {event.is_a? LogStash::Event}
           insist {event.get("foo")} == test_event.get("foo")
           insist {event.get("bar")} == test_event.get("bar")
+        end
 ...
 
 ```
 
-protobuf 
-
-```protobuf
-require "logstash/codecs/protobuf"
-$plugin = LogStash::Codecs::Protobuf.new("class_name" => "AdsServing::Proto::BidRequest", "include_path" => ["/usr/share/logstash/protobuf.pb.rb"],"protobuf_version" => 2)
-$plugin.register
-
-def decode(encode)
-  $plugin.decode(encode) do |event|
-    return event.to_hash
-  end
-end
-
-```
+custom_codec_avro.rb
 
 ```avro
+
 require "logstash/codecs/avro"
 $subject do
       allow_any_instance_of(LogStash::Codecs::Avro).to \
