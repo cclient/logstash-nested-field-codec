@@ -22,7 +22,7 @@ like
 
 git clone git@github.com:cclient/logstash-n
 
-docker run -d --name logstash-nested-field-codec -v $(pwd)/logstash-nested-field-codec:/usr/share/logstash/logstash-nested-field-codec logstash:6.3.0  tail -f /dev/null
+docker run -d --name logstash-nested-field-codec -v $(pwd)/logstash-nested-field-codec:/usr/share/logstash/logstash-nested-field-codec docker.elastic.co/logstash/logstash:6.3.2  tail -f /dev/null
 
 ### start logstash server
 
