@@ -48,6 +48,37 @@ like
 
 `echo -e "\n" >>  logstash-nested-field-codec/log/demo.json`
 
+#expect out
+
+```json
+{
+    "base64_encode": "CghKb2huIERvZRDSCRoQamRvZUBleGFtcGxlLmNvbSIMCgg1NTUtNDMyMRAB",
+    "name": "logstash-nested-field-codec",
+    "json_decode": {
+        "k": "v"
+    },
+    "base64_decode": "\n\bJohn Doe\u0010Ò\t\u001a\u0010jdoe@example.com\"\f\n\b555-4321\u0010\u0001",
+    "protobuf_decode": {
+        "@version": "1",
+        "phones": [
+            {
+                "type": 1,
+                "number": "555-4321"
+            }
+        ],
+        "email": "jdoe@example.com",
+        "id": 1234,
+        "@timestamp": "2018-12-07T02:52:08.497Z",
+        "name": "John Doe"
+    },
+    "path": "/usr/share/logstash/logstash-nested-field-codec/log/demo.json",
+    "host": "1753d2919ebe",
+    "json_encode": "{\"k\":\"v\"}",
+    "@timestamp": "2018-12-07T02:52:07.945Z",
+    "@version": "1"
+}
+```
+
 this demo test for protobuf to other logstash-codec-plugins
 
 ### view
