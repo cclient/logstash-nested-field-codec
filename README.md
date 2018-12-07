@@ -32,7 +32,7 @@ like
 
 * `git clone git@github.com:cclient/logstash-nested-field-codec`
 
-* `docker run -d --name logstash-nested-field-codec -v $(pwd)/logstash-nested-field-codec:/usr/share/logstash/logstash-nested-field-codec docker pull docker.elastic.co/logstash/logstash:6.3.2  tail -f /dev/null`
+* `docker run -d --name logstash-nested-field-codec -v $(pwd)/logstash-nested-field-codec:/usr/share/logstash/logstash-nested-field-codec docker.elastic.co/logstash/logstash:6.3.2  tail -f /dev/null`
 
 ### start logstash
 
@@ -40,7 +40,13 @@ like
 
 * `logstash-plugin install logstash-codec-protobuf`
 
-* `logstash -f nested-field-codec.conf`
+* `logstash -f logstash-nested-field-codec/nested-field-codec.conf`
+
+#### new session
+
+`docker exec -it logstash-nested-field-codec bash`
+
+`echo -e "\n" >>  logstash-nested-field-codec/log/demo.json`
 
 this demo test for protobuf to other logstash-codec-plugins
 
